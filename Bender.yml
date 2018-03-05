@@ -1,0 +1,6 @@
+package:
+  name: apb
+  authors: ["Florian Zaruba <zarubaf@iis.ee.ethz.ch>"]
+
+sources:
+  - src/apb_intf.sv
