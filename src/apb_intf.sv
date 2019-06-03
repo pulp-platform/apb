@@ -10,7 +10,8 @@
 // specific language governing permissions and limitations under the License.
 
 // An APB2 interface
-interface APB_BUS #(
+interface APB #(
+interface APB;
     parameter int unsigned APB_ADDR_WIDTH = 32,
     parameter int unsigned APB_DATA_WIDTH = 32
 );
