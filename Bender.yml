@@ -19,3 +19,4 @@ sources:
   # Level 1
   - src/apb_bus.sv
   - src/apb_ro_regs.sv
+  - src/apb_rw_regs.sv
