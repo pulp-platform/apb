@@ -32,30 +32,14 @@ interface APB;
   data_t  prdata;
   logic   pslverr;
 
+  modport Master (
+    output paddr, pprot, psel, penable, pwrite, pwdata, pstrb,
+    input  pready, prdata, pslverr
+  );
 
-    // Master Side
-    modport Master (
-        output paddr,  pwdata,  pwrite, psel,  penable,
-        input  prdata,          pready,        pslverr
-    );
-
-    // Slave Side
-    modport Slave (
-        input   paddr,  pwdata,  pwrite, psel,  penable,
-        output  prdata,          pready,        pslverr
-    );
-
-    /// The interface as an output (issuing requests, initiator, master).
-    modport out (
-        output paddr,  pwdata,  pwrite, psel,  penable,
-        input  prdata,          pready,        pslverr
-    );
-
-    /// The interface as an input (accepting requests, target, slave)
-    modport in (
-        input   paddr,  pwdata,  pwrite, psel,  penable,
-        output  prdata,          pready,        pslverr
-    );
-
+  modport Slave (
+    input  paddr, pprot, psel, penable, pwrite, pwdata, pstrb,
+    output pready, prdata, pslverr
+  );
 
 endinterface
