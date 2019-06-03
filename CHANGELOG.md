@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
+- Add clocked `APB_DV` interface for design verification.
+- Define macros for assigning APB interfaces.
+- Add read-only and read-write registers with APB interface.
+- Add basic test infrastructure for APB modules.
+
+### Changed
+- Rename `APB_BUS` interface to `APB`, change its parameters to constants, and remove `in` and `out`
+  modports.
+
 ## 0.1.0 - 2018-09-12
 ### Changed
 - Open source release.
