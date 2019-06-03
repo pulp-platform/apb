@@ -10,20 +10,27 @@
 // specific language governing permissions and limitations under the License.
 
 // An APB2 interface
-interface APB #(
 interface APB;
-    parameter int unsigned APB_ADDR_WIDTH = 32,
-    parameter int unsigned APB_DATA_WIDTH = 32
-);
 
-    logic [APB_ADDR_WIDTH-1:0] paddr;
-    logic [APB_DATA_WIDTH-1:0] pwdata;
-    logic                      pwrite;
-    logic                      psel;
-    logic                      penable;
-    logic [APB_DATA_WIDTH-1:0] prdata;
-    logic                      pready;
-    logic                      pslverr;
+  localparam ADDR_WIDTH = 32;
+  localparam DATA_WIDTH = 32;
+  localparam STRB_WIDTH = DATA_WIDTH / 8;
+
+  typedef logic [ADDR_WIDTH-1:0]  addr_t;
+  typedef logic [DATA_WIDTH-1:0]  data_t;
+  typedef logic            [2:0]  prot_t;
+  typedef logic [STRB_WIDTH-1:0]  strb_t;
+
+  addr_t  paddr;
+  prot_t  pprot;
+  logic   psel;
+  logic   penable;
+  logic   pwrite;
+  data_t  pwdata;
+  strb_t  pstrb;
+  logic   pready;
+  data_t  prdata;
+  logic   pslverr;
 
 
     // Master Side
