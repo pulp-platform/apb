@@ -20,3 +20,7 @@ sources:
   - src/apb_bus.sv
   - src/apb_ro_regs.sv
   - src/apb_rw_regs.sv
+
+  - target: simulation
+    files:
+      - src/apb_test.sv
