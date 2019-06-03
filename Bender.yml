@@ -18,3 +18,4 @@ sources:
   - src/apb_intf.sv
   # Level 1
   - src/apb_bus.sv
+  - src/apb_ro_regs.sv
