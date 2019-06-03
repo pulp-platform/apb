@@ -2,5 +2,8 @@ package:
   name: apb
   authors: ["Fabian Schuiki <fschuiki@iis.ee.ethz.ch>"]
 
+export_include_dirs:
+  - include
+
 sources:
   - src/apb_intf.sv
