@@ -17,38 +17,44 @@
 module apb_bus #(
   // Number of slaves.
   parameter int unsigned N_SLV  = 0,
+  // Address and data width.
+  parameter int unsigned ADDR_WIDTH = 0,
+  parameter int unsigned DATA_WIDTH = 0,
   // Address ranges of the slaves. Slave i is mapped in the inclusive interval from ADDR_BEGIN[i] to
   // ADDR_END[i].
-  parameter logic [N_SLV-1:0][31:0] ADDR_BEGIN  = '0,
-  parameter logic [N_SLV-1:0][31:0] ADDR_END    = '0
+  parameter logic [N_SLV-1:0][ADDR_WIDTH-1:0] ADDR_BEGIN  = '0,
+  parameter logic [N_SLV-1:0][ADDR_WIDTH-1:0] ADDR_END    = '0,
+  localparam type addr_t = logic [ADDR_WIDTH-1:0],
+  localparam type data_t = logic [DATA_WIDTH-1:0],
+  localparam type strb_t = logic [DATA_WIDTH/8-1:0]
 ) (
   // Input
-  input  logic                    pclk_i,
-  input  logic                    preset_ni,
-  input  logic             [31:0] paddr_i,
-  input  logic              [2:0] pprot_i,
-  input  logic                    psel_i,
-  input  logic                    penable_i,
-  input  logic                    pwrite_i,
-  input  logic             [31:0] pwdata_i,
-  input  logic              [3:0] pstrb_i,
-  output logic                    pready_o,
-  output logic             [31:0] prdata_o,
-  output logic                    pslverr_o,
+  input  logic        pclk_i,
+  input  logic        preset_ni,
+  input  addr_t       paddr_i,
+  input  logic [2:0]  pprot_i,
+  input  logic        psel_i,
+  input  logic        penable_i,
+  input  logic        pwrite_i,
+  input  data_t       pwdata_i,
+  input  strb_t       pstrb_i,
+  output logic        pready_o,
+  output data_t       prdata_o,
+  output logic        pslverr_o,
 
   // Outputs
-  output logic [N_SLV-1:0]        pclk_o,
-  output logic [N_SLV-1:0]        preset_no,
-  output logic [N_SLV-1:0][31:0]  paddr_o,
-  output logic [N_SLV-1:0] [2:0]  pprot_o,
-  output logic [N_SLV-1:0]        psel_o,
-  output logic [N_SLV-1:0]        penable_o,
-  output logic [N_SLV-1:0]        pwrite_o,
-  output logic [N_SLV-1:0][31:0]  pwdata_o,
-  output logic [N_SLV-1:0] [3:0]  pstrb_o,
-  input  logic [N_SLV-1:0]        pready_i,
-  input  logic [N_SLV-1:0][31:0]  prdata_i,
-  input  logic [N_SLV-1:0]        pslverr_i
+  output logic  [N_SLV-1:0]       pclk_o,
+  output logic  [N_SLV-1:0]       preset_no,
+  output addr_t [N_SLV-1:0]       paddr_o,
+  output logic  [N_SLV-1:0][2:0]  pprot_o,
+  output logic  [N_SLV-1:0]       psel_o,
+  output logic  [N_SLV-1:0]       penable_o,
+  output logic  [N_SLV-1:0]       pwrite_o,
+  output data_t [N_SLV-1:0]       pwdata_o,
+  output strb_t [N_SLV-1:0]       pstrb_o,
+  input  logic  [N_SLV-1:0]       pready_i,
+  input  data_t [N_SLV-1:0]       prdata_i,
+  input  logic  [N_SLV-1:0]       pslverr_i
 );
 
   logic [$clog2(N_SLV)-1:0] sel_idx;
