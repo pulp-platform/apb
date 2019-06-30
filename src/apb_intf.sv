@@ -12,8 +12,8 @@
 // An APB2 interface
 interface APB;
 
-  localparam ADDR_WIDTH = 32;
-  localparam DATA_WIDTH = 32;
+  parameter int unsigned ADDR_WIDTH = 0;
+  parameter int unsigned DATA_WIDTH = 0;
   localparam STRB_WIDTH = DATA_WIDTH / 8;
 
   typedef logic [ADDR_WIDTH-1:0]  addr_t;
