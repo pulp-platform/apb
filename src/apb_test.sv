@@ -29,7 +29,7 @@ package apb_test;
     function void reset_master();
       apb.paddr   <= '0;
       apb.pprot   <= '0;
-      apb.psel    <= 1'b0;
+      apb.psel    <= '0;
       apb.penable <= 1'b0;
       apb.pwrite  <= 1'b0;
       apb.pwdata  <= '0;
@@ -52,17 +52,18 @@ package apb_test;
 
     task read(
       input  logic [31:0] addr,
+      input  int unsigned psel_idx,
       output logic [31:0] data,
-      output logic err
+      output logic        err
     );
       while (!lock.try_get()) begin
         cycle_end();
       end
-      apb.paddr   <= #TA addr;
-      apb.pwrite  <= #TA 1'b0;
-      apb.psel    <= #TA 1'b1;
+      apb.paddr          <= #TA addr;
+      apb.pwrite         <= #TA 1'b0;
+      apb.psel[psel_idx] <= #TA 1'b1;
       cycle_end();
-      apb.penable <= #TA 1'b1;
+      apb.penable        <= #TA 1'b1;
       cycle_start();
       while (!apb.pready) begin
         cycle_end();
@@ -72,13 +73,14 @@ package apb_test;
       err   = apb.pslverr;
       cycle_end();
       apb.paddr   <= #TA '0;
-      apb.psel    <= #TA 1'b0;
+      apb.psel    <= #TA '0;
       apb.penable <= #TA 1'b0;
       lock.put();
     endtask
 
     task write(
       input  logic [31:0] addr,
+      input  int unsigned psel_idx,
       input  logic [31:0] data,
       input  logic  [3:0] strb,
       output logic err
@@ -86,13 +88,13 @@ package apb_test;
       while (!lock.try_get()) begin
         cycle_end();
       end
-      apb.paddr   <= #TA addr;
-      apb.pwdata  <= #TA data;
-      apb.pstrb   <= #TA strb;
-      apb.pwrite  <= #TA 1'b1;
-      apb.psel    <= #TA 1'b1;
+      apb.paddr          <= #TA addr;
+      apb.pwdata         <= #TA data;
+      apb.pstrb          <= #TA strb;
+      apb.pwrite         <= #TA 1'b1;
+      apb.psel[psel_idx] <= #TA 1'b1;
       cycle_end();
-      apb.penable <= #TA 1'b1;
+      apb.penable        <= #TA 1'b1;
       cycle_start();
       while (!apb.pready) begin
         cycle_end();
@@ -104,7 +106,7 @@ package apb_test;
       apb.pwdata  <= #TA '0;
       apb.pstrb   <= #TA '0;
       apb.pwrite  <= #TA 1'b0;
-      apb.psel    <= #TA 1'b0;
+      apb.psel    <= #TA '0;
       apb.penable <= #TA 1'b0;
       lock.put();
     endtask
