@@ -9,28 +9,28 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-// An APB2 interface
-interface APB;
+// An APB4 (v2.0) interface
+interface APB (
+  parameter int unsigned AddrWidth = 32'd32,
+  parameter int unsigned DataWidth = 32'd32,
+  parameter int unsigned PselWidth = 32'd1
+);
+  localparam int unsigned StrbWidth = cf_math_pkg::ceil_div(DataWidth, 8);
+  typedef logic [AddrWidth-1:0] addr_t;
+  typedef logic [PselWidth-1:0] psel_t;
+  typedef logic [DataWidth-1:0] data_t;
+  typedef logic [StrbWidth-1:0] strb_t;
 
-  localparam ADDR_WIDTH = 32;
-  localparam DATA_WIDTH = 32;
-  localparam STRB_WIDTH = DATA_WIDTH / 8;
-
-  typedef logic [ADDR_WIDTH-1:0]  addr_t;
-  typedef logic [DATA_WIDTH-1:0]  data_t;
-  typedef logic            [2:0]  prot_t;
-  typedef logic [STRB_WIDTH-1:0]  strb_t;
-
-  addr_t  paddr;
-  prot_t  pprot;
-  logic   psel;
-  logic   penable;
-  logic   pwrite;
-  data_t  pwdata;
-  strb_t  pstrb;
-  logic   pready;
-  data_t  prdata;
-  logic   pslverr;
+  addr_t          paddr;
+  apb_pkg::prot_t pprot;
+  psel_t          psel;
+  logic           penable;
+  logic           pwrite;
+  data_t          pwdata;
+  strb_t          pstrb;
+  logic           pready;
+  data_t          prdata;
+  logic           pslverr;
 
   modport Master (
     output paddr, pprot, psel, penable, pwrite, pwdata, pstrb,
@@ -44,30 +44,30 @@ interface APB;
 
 endinterface
 
-// A clocked APB2 interface for use in design verification
-interface APB_DV (
+// A clocked APB4 (v2.0) interface for use in design verification
+interface APB_DV #(
+  parameter int unsigned AddrWidth = 32'd32,
+  parameter int unsigned DataWidth = 32'd32,
+  parameter int unsigned PselWidth = 32'd1
+) (
   input logic clk_i
 );
+  localparam int unsigned StrbWidth = cf_math_pkg::ceil_div(DataWidth, 8);
+  typedef logic [AddrWidth-1:0] addr_t;
+  typedef logic [PselWidth-1:0] psel_t;
+  typedef logic [DataWidth-1:0] data_t;
+  typedef logic [StrbWidth-1:0] strb_t;
 
-  localparam ADDR_WIDTH = 32;
-  localparam DATA_WIDTH = 32;
-  localparam STRB_WIDTH = DATA_WIDTH / 8;
-
-  typedef logic [ADDR_WIDTH-1:0]  addr_t;
-  typedef logic [DATA_WIDTH-1:0]  data_t;
-  typedef logic            [2:0]  prot_t;
-  typedef logic [STRB_WIDTH-1:0]  strb_t;
-
-  addr_t  paddr;
-  prot_t  pprot;
-  logic   psel;
-  logic   penable;
-  logic   pwrite;
-  data_t  pwdata;
-  strb_t  pstrb;
-  logic   pready;
-  data_t  prdata;
-  logic   pslverr;
+  apb_pkg::addr_t paddr;
+  apb_pkg::prot_t pprot;
+  psel_t          psel;
+  logic           penable;
+  logic           pwrite;
+  apb_pkg::data_t pwdata;
+  apb_pkg::strb_t pstrb;
+  logic           pready;
+  apb_pkg::data_t prdata;
+  logic           pslverr;
 
   modport Master (
     output paddr, pprot, psel, penable, pwrite, pwdata, pstrb,
