@@ -1,4 +1,4 @@
-// Copyright (c) 2014 ETH Zurich, University of Bologna
+// Copyright (c) 2014-2020 ETH Zurich, University of Bologna
 //
 // Copyright and related rights are licensed under the Solderpad Hardware
 // License, Version 0.51 (the "License"); you may not use this file except in
@@ -12,18 +12,16 @@
 // An APB4 (v2.0) interface
 interface APB (
   parameter int unsigned AddrWidth = 32'd32,
-  parameter int unsigned DataWidth = 32'd32,
-  parameter int unsigned PselWidth = 32'd1
+  parameter int unsigned DataWidth = 32'd32
 );
   localparam int unsigned StrbWidth = cf_math_pkg::ceil_div(DataWidth, 8);
   typedef logic [AddrWidth-1:0] addr_t;
-  typedef logic [PselWidth-1:0] psel_t;
   typedef logic [DataWidth-1:0] data_t;
   typedef logic [StrbWidth-1:0] strb_t;
 
   addr_t          paddr;
   apb_pkg::prot_t pprot;
-  psel_t          psel;
+  logic           psel;
   logic           penable;
   logic           pwrite;
   data_t          pwdata;
@@ -47,20 +45,18 @@ endinterface
 // A clocked APB4 (v2.0) interface for use in design verification
 interface APB_DV #(
   parameter int unsigned AddrWidth = 32'd32,
-  parameter int unsigned DataWidth = 32'd32,
-  parameter int unsigned PselWidth = 32'd1
+  parameter int unsigned DataWidth = 32'd32
 ) (
   input logic clk_i
 );
   localparam int unsigned StrbWidth = cf_math_pkg::ceil_div(DataWidth, 8);
   typedef logic [AddrWidth-1:0] addr_t;
-  typedef logic [PselWidth-1:0] psel_t;
   typedef logic [DataWidth-1:0] data_t;
   typedef logic [StrbWidth-1:0] strb_t;
 
   apb_pkg::addr_t paddr;
   apb_pkg::prot_t pprot;
-  psel_t          psel;
+  logic           psel;
   logic           penable;
   logic           pwrite;
   apb_pkg::data_t pwdata;
