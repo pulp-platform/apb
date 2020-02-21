@@ -31,3 +31,10 @@ sources:
   - target: test
     files:
       - test/tb_apb_ro_regs.sv
+      - test/tb_apb_rw_regs.sv
+
+  - target: synth_test
+    files:
+      # Level 0
+      - test/synth_bench.sv
+
