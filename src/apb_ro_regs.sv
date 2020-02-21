@@ -18,6 +18,7 @@
 module apb_ro_regs #(
   parameter int unsigned NoApbRegs    = 32'd0, // number of read only registers
   parameter int unsigned ApbAddrWidth = 32'd0, // address width of `req_i.paddr`
+  parameter int unsigned ApbDataWidth = 32'd0, // data width of the `req_i.pwdata` & `resp_o.prdata`
   parameter int unsigned RegDataWidth = 32'd0, // data width of the registers
   parameter type         req_t        = logic, // APB4 request type
   parameter type         resp_t       = logic, // APB4 response type
@@ -35,7 +36,8 @@ module apb_ro_regs #(
   input  reg_data_t [NoApbRegs-1:0] reg_i
 );
   localparam int unsigned IdxWidth  = (NoApbRegs > 32'd1) ? $clog2(NoApbRegs) : 32'd1;
-  typedef logic [IdxWidth-1:0] idx_t;
+  typedef logic [IdxWidth-1:0]     idx_t;
+  typedef logic [ApbAddrWidth-1:0] apb_data_t;
   typedef struct packed {
     int unsigned idx;
     apb_addr_t   start_addr;
@@ -59,16 +61,15 @@ module apb_ro_regs #(
   always_comb begin
     resp_o = '{
       pready:  req_i.psel & req_i.penable,
-      prdata:  '0,
+      prdata:  apb_data_t'(32'h0BAD_B10C),
       pslverr: apb_pkg::RESP_OKAY
     };
     if (req_i.psel) begin
       if (req_i.pwrite || !decode_valid) begin
         // Error response on writes and decode errors
         resp_o.pslverr = apb_pkg::RESP_SLVERR;
-        resp_o.prdata  = reg_data_t'(32'h0BAD_B10C);
       end else begin
-        resp_o.prdata = reg_i[reg_idx];
+        resp_o.prdata = apb_data_t'(reg_i[reg_idx]);
       end
     end
   end
@@ -96,14 +97,18 @@ module apb_ro_regs #(
           else $fatal(1, "The number of registers must be at least 1!");
       assert (ApbAddrWidth > 32'd2)
           else $fatal(1, "ApbAddrWidth is not wide enough, has to be at least 3 bit wide!");
+      assert ($bits(req_i.paddr) == ApbAddrWidth)
+          else $fatal(1, "AddrWidth does not match req_i.paddr!");
+      assert (ApbDataWidth == $bits(resp_o.prdata))
+          else $fatal(1, "ApbDataWidth has to be: ApbDataWidth == $bits(req_i.prdata)!");
+      assert (ApbDataWidth > 32'd0 && ApbDataWidth <= 32'd32)
+          else $fatal(1, "ApbDataWidth has to be: 32'd32 >= RegDataWidth > 0!");
+      assert ($bits(resp_o.prdata) == $bits(req_i.pwdata))
+          else $fatal(1, "req_i.pwdata has to match resp_o.prdata in width!");
       assert (RegDataWidth > 32'd0 && RegDataWidth <= 32'd32)
           else $fatal(1, "RegDataWidth has to be: 32'd32 >= RegDataWidth > 0!");
       assert (RegDataWidth <= $bits(resp_o.prdata))
           else $fatal(1, "RegDataWidth has to be: RegDataWidth <= $bits(req_i.prdata)!");
-      assert ($bits(resp_o.prdata) == $bits(req_i.pwdata))
-          else $fatal(1, "req_i.pwdata has to match resp_o.prdata in width!");
-      assert ($bits(req_i.paddr) == ApbAddrWidth)
-          else $fatal(1, "AddrWidth does not match req_i.paddr!");
     end
   `endif
   // pragma translate_on
@@ -145,6 +150,7 @@ module apb_ro_regs_intf #(
   apb_ro_regs #(
     .NoApbRegs    ( NO_APB_REGS    ),
     .ApbAddrWidth ( APB_ADDR_WIDTH ),
+    .ApbDataWidth ( APB_DATA_WIDTH ),
     .RegDataWidth ( REG_DATA_WIDTH ),
     .req_t        ( apb_req_t      ),
     .resp_t       ( apb_resp_t     )
