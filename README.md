@@ -15,7 +15,6 @@ Maintainer: Andreas Kurth <akurth@iis.ee.ethz.ch>
 | [`apb/typedef`](include/apb/typedef.svh) | Macros which define the APB4 request/response structs             |
 | [`apb/assign`](include/apb/typedef.svh)  | Macros which assign/set/translates APB4 interfaces and structs    |
 
-
 ### Interfaces
 
 |           Name                           |                     Description                                   |
@@ -27,14 +26,7 @@ Maintainer: Andreas Kurth <akurth@iis.ee.ethz.ch>
 
 |           Name                           |                     Description                                   |
 |------------------------------------------|-------------------------------------------------------------------|
-| [`apb_ro_regs`](src/apb_ro_regs.sv)      | Read-only registers                                               |
-| [`apb_rw_regs`](src/apb_rw_regs.sv)      | Read and write registers                                          |
-
-### Intermediary Modules
-
-|           Name                           |                     Description                                   |
-|------------------------------------------|-------------------------------------------------------------------|
-| [`apb_bus`](src/apb_bus.sv)              | APB bus with single master and multiple slave interfaces          |
+| [`apb_regs`](src/apb_regs.sv)            | Read and write registers, with optional read only mapping         |
 
 ### Verification and Simulation
 

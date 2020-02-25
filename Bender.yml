@@ -20,9 +20,7 @@ sources:
   # Level 1
   - src/apb_intf.sv
   # Level 2
-  - src/apb_bus.sv
-  - src/apb_ro_regs.sv
-  - src/apb_rw_regs.sv
+  - src/apb_regs.sv
 
   - target: simulation
     files:
@@ -30,8 +28,7 @@ sources:
 
   - target: test
     files:
-      - test/tb_apb_ro_regs.sv
-      - test/tb_apb_rw_regs.sv
+      - test/tb_apb_regs.sv
 
   - target: synth_test
     files:

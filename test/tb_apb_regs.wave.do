@@ -1,13 +1,14 @@
 log -r *
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate /tb_apb_rw_regs/i_apb_rw_regs_dut/pclk_i
-add wave -noupdate /tb_apb_rw_regs/i_apb_rw_regs_dut/preset_ni
-add wave -noupdate /tb_apb_rw_regs/i_apb_rw_regs_dut/base_addr_i
-add wave -noupdate /tb_apb_rw_regs/i_apb_rw_regs_dut/reg_init_i
-add wave -noupdate /tb_apb_rw_regs/i_apb_rw_regs_dut/reg_q_o
-add wave -noupdate -expand /tb_apb_rw_regs/i_apb_rw_regs_dut/apb_req
-add wave -noupdate -expand /tb_apb_rw_regs/i_apb_rw_regs_dut/apb_resp
+add wave -noupdate /tb_apb_regs/i_apb_regs_dut/pclk_i
+add wave -noupdate /tb_apb_regs/i_apb_regs_dut/preset_ni
+add wave -noupdate /tb_apb_regs/i_apb_regs_dut/base_addr_i
+add wave -noupdate -expand /tb_apb_regs/i_apb_regs_dut/apb_req
+add wave -noupdate -expand /tb_apb_regs/i_apb_regs_dut/apb_resp
+add wave -noupdate /tb_apb_regs/i_apb_regs_dut/base_addr_i
+add wave -noupdate /tb_apb_regs/i_apb_regs_dut/reg_init_i
+add wave -noupdate /tb_apb_regs/i_apb_regs_dut/reg_q_o
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {0 ns} 0}
 quietly wave cursor active 0
