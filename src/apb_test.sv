@@ -12,12 +12,17 @@
 // Test infrastructure for APB interfaces
 package apb_test;
 
-  // Simple APB driver with thread-safe 32-bit read and write functions
+  // Simple APB driver with thread-safe read and write functions
   class apb_driver #(
-    parameter time TA = 0ns,
-    parameter time TT = 0ns
+    parameter int unsigned ADDR_WIDTH = 32'd32, // APB4 address width
+    parameter int unsigned DATA_WIDTH = 32'd32, // APB4 data width
+    parameter time         TA         = 0ns,    // application time
+    parameter time         TT         = 0ns     // test time
   );
-
+    localparam int unsigned STRB_WIDTH = cf_math_pkg::ceil_div(DATA_WIDTH, 8);
+    typedef logic [ADDR_WIDTH-1:0] addr_t;
+    typedef logic [DATA_WIDTH-1:0] data_t;
+    typedef logic [STRB_WIDTH-1:0] strb_t;
     virtual APB_DV apb;
     semaphore lock;
 
@@ -29,7 +34,7 @@ package apb_test;
     function void reset_master();
       apb.paddr   <= '0;
       apb.pprot   <= '0;
-      apb.psel    <= '0;
+      apb.psel    <= 1'b0;
       apb.penable <= 1'b0;
       apb.pwrite  <= 1'b0;
       apb.pwdata  <= '0;
@@ -50,20 +55,20 @@ package apb_test;
       @(posedge apb.clk_i);
     endtask
 
+    // this task reads from an APB4 slave, acts as master
     task read(
-      input  logic [31:0] addr,
-      input  int unsigned psel_idx,
-      output logic [31:0] data,
-      output logic        err
+      input  addr_t addr,
+      output data_t data,
+      output logic  err
     );
       while (!lock.try_get()) begin
         cycle_end();
       end
-      apb.paddr          <= #TA addr;
-      apb.pwrite         <= #TA 1'b0;
-      apb.psel[psel_idx] <= #TA 1'b1;
+      apb.paddr   <= #TA addr;
+      apb.pwrite  <= #TA 1'b0;
+      apb.psel    <= #TA 1'b1;
       cycle_end();
-      apb.penable        <= #TA 1'b1;
+      apb.penable <= #TA 1'b1;
       cycle_start();
       while (!apb.pready) begin
         cycle_end();
@@ -73,17 +78,17 @@ package apb_test;
       err   = apb.pslverr;
       cycle_end();
       apb.paddr   <= #TA '0;
-      apb.psel    <= #TA '0;
+      apb.psel    <= #TA 1'b0;
       apb.penable <= #TA 1'b0;
       lock.put();
     endtask
 
+    // this task writes to an APB4 slave, acts as master
     task write(
-      input  logic [31:0] addr,
-      input  int unsigned psel_idx,
-      input  logic [31:0] data,
-      input  logic  [3:0] strb,
-      output logic err
+      input  addr_t addr,
+      input  data_t data,
+      input  strb_t strb,
+      output logic  err
     );
       while (!lock.try_get()) begin
         cycle_end();
