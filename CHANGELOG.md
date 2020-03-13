@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Define macros for assigning APB interfaces.
 - Add read-only and read-write registers with APB interface.
 - Add basic test infrastructure for APB modules.
+- Add contribution guidelines.
 
 ### Changed
 - Rename `APB_BUS` interface to `APB`, change its parameters to constants, and remove `in` and `out`
