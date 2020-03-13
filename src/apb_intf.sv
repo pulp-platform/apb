@@ -11,13 +11,13 @@
 
 // An APB4 (v2.0) interface
 interface APB (
-  parameter int unsigned AddrWidth = 32'd32,
-  parameter int unsigned DataWidth = 32'd32
+  parameter int unsigned ADDR_WIDTH = 32'd32,
+  parameter int unsigned DATA_WIDTH = 32'd32
 );
-  localparam int unsigned StrbWidth = cf_math_pkg::ceil_div(DataWidth, 8);
-  typedef logic [AddrWidth-1:0] addr_t;
-  typedef logic [DataWidth-1:0] data_t;
-  typedef logic [StrbWidth-1:0] strb_t;
+  localparam int unsigned STRB_WIDTH = cf_math_pkg::ceil_div(DATA_WIDTH, 8);
+  typedef logic [ADDR_WIDTH-1:0] addr_t;
+  typedef logic [DATA_WIDTH-1:0] data_t;
+  typedef logic [STRB_WIDTH-1:0] strb_t;
 
   addr_t          paddr;
   apb_pkg::prot_t pprot;
@@ -44,15 +44,15 @@ endinterface
 
 // A clocked APB4 (v2.0) interface for use in design verification
 interface APB_DV #(
-  parameter int unsigned AddrWidth = 32'd32,
-  parameter int unsigned DataWidth = 32'd32
+  parameter int unsigned ADDR_WIDTH = 32'd32,
+  parameter int unsigned DATA_WIDTH = 32'd32
 ) (
   input logic clk_i
 );
-  localparam int unsigned StrbWidth = cf_math_pkg::ceil_div(DataWidth, 8);
-  typedef logic [AddrWidth-1:0] addr_t;
-  typedef logic [DataWidth-1:0] data_t;
-  typedef logic [StrbWidth-1:0] strb_t;
+  localparam int unsigned STRB_WIDTH = cf_math_pkg::ceil_div(DATA_WIDTH, 8);
+  typedef logic [ADDR_WIDTH-1:0] addr_t;
+  typedef logic [DATA_WIDTH-1:0] data_t;
+  typedef logic [STRB_WIDTH-1:0] strb_t;
 
   apb_pkg::addr_t paddr;
   apb_pkg::prot_t pprot;
