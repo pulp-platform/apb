@@ -24,4 +24,4 @@ call_vsim() {
 	grep "Errors: 0," vsim.log
 }
 
-call_vsim tb_apb_regs -64 -t 1ns -coverage -lib rtl -voptargs="+acc +cover=bcesfx"
+call_vsim tb_apb_regs -64 -t 1ns -coverage -lib work -voptargs="+acc +cover=bcesfx"
