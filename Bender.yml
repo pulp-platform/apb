@@ -27,3 +27,7 @@ sources:
   - target: simulation
     files:
       - src/apb_test.sv
+
+  - target: test
+    files:
+      - test/tb_apb_ro_regs.sv

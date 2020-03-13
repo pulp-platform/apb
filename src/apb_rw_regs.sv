@@ -14,7 +14,7 @@
 `include "common_cells/registers.svh"
 
 module apb_rw_regs #(
-  parameter int unsigned NoRegs = 0
+  parameter int unsigned NoRegs = 0,
   parameter int unsigned AddrWidth = 32'd0,
   parameter int unsigned DataWidth = 32'd0,
   // DEPENDENT PARAMETERS DO NOT OVERWRITE!

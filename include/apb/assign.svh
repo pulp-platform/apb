@@ -55,18 +55,18 @@
 //   `APB_SET_FROM_REQ(my_if, my_req_struct)
 //   `APB_SET_FROM_RESP(my_if, my_resp_struct)
 // end
-`define APB_SET_FROM_REQ  ( apb_if,  req_struct )  `APB_FROM_REQ  (, apb_if,  req_struct )
-`define APB_SET_FROM_RESP ( apb_if, resp_struct )  `APB_FROM_RESP (, apb_if, resp_struct )
+`define APB_SET_FROM_REQ(apb_if, req_struct)  `APB_FROM_REQ(, apb_if, req_struct)
+`define APB_SET_FROM_RESP(apb_if, resp_struct) `APB_FROM_RESP(, apb_if, resp_struct)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Assigning an interface from request/response structs outside a process.
 //
 // Usage Example:
-// `AXI_ASSIGN_FROM_REQ(my_if, my_req_struct)
-// `AXI_ASSIGN_FROM_RESP(my_if, my_resp_struct)
-`define APB_ASSIGN_FROM_REQ  ( apb_if,  req_struct ) `APB_FROM_REQ  ( assign, apb_if,  req_struct )
-`define APB_ASSIGN_FROM_RESP ( apb_if, resp_struct ) `APB_FROM_RESP ( assign, apb_if, resp_struct )
+// `APB_ASSIGN_FROM_REQ(my_if, my_req_struct)
+// `APB_ASSIGN_FROM_RESP(my_if, my_resp_struct)
+`define APB_ASSIGN_FROM_REQ(apb_if, req_struct)  `APB_FROM_REQ(assign, apb_if, req_struct)
+`define APB_ASSIGN_FROM_RESP(apb_if, resp_struct) `APB_FROM_RESP(assign, apb_if, resp_struct)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,8 +99,8 @@
 //   `APB_SET_TO_REQ(my_req_struct, my_if);
 //   `APB_SET_TO_RESP(my_resp_struct, my_if);
 // end
-`define APB_SET_TO_REQ     (  req_struct, apb_if ) `APB_TO_REQ  (,  req_struct, apb_if )
-`define APB_SET_TO_RESP    ( resp_struct, apb_if ) `APB_TO_RESP (, resp_struct, apb_if )
+`define APB_SET_TO_REQ(req_struct, apb_if)   `APB_TO_REQ(, req_struct, apb_if)
+`define APB_SET_TO_RESP(resp_struct, apb_if) `APB_TO_RESP(, resp_struct, apb_if)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,52 +108,8 @@
 //
 // Usage Example:
 // `APB_ASSIGN_TO_REQ(my_req_struct, my_if);
-`define APB_ASSIGN_TO_REQ     (  req_struct, apb_if) `APB_TO_REQ  ( assign,  req_struct, apb_if )
-`define APB_ASSIGN_TO_RESP    ( resp_struct, apb_if) `APB_TO_RESP ( assign, resp_struct, apb_if )
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// Internal implementation for selecting a sel_t from structs to structs, allows for standalone
-// assignments (with `opt_as = assign`) and assignments inside process (with `opt_as` void) with
-// the same code.
-// requires that `slv_req_struct` has a `psel` width of `1'b1` and `mst_req_struct` has a `psel`
-// width < `psel_idx`
-`define APB_SEL_IDX ( opt_as, slv_req_struct, mst_req_struct, psel_idx ) \
-  opt_as slv_req_struct = '{                                             \
-    paddr:   mst_req_struct.paddr,                                       \
-    pprot:   mst_req_struct.pprot,                                       \
-    psel:    mst_req_struct.psel[psel_idx],                              \
-    penable: mst_req_struct.penable,                                     \
-    pwrite:  mst_req_struct.pwrite,                                      \
-    pwdata:  mst_req_struct.pwdata,                                      \
-    pstrb:   mst_req_struct.pstrb                                        \
-  };
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// Setting a selection from one to another inside a process.
-// `my_psel_idx` is the index of the `psel` signal in `my_mst_req_struct`.
-// The `psel` signal in `my_slv_req_struct` has to have a width of 1.
-//
-// Usage Example:
-// always_comb begin
-//   `APB_SET_SEL ( my_slv_req_struct, my_mst_req_struct, my_psel_idx )
-// end
-`define APB_SET_SEL ( slv_req_struct, my_mst_req_struct, psel_idx ) \
-  `APB_SEL_IDX  (, slv_req_struct, mst_req_struct, psel_idx )
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// Setting a selection from one to another inside a process.
-// `my_psel_idx` is the index of the `psel` signal in `my_mst_req_struct`.
-// The `psel` signal in `my_slv_req_struct` has to have a width of 1.
-//
-// Usage Example:
-// always_comb begin
-//   `APB_ASSIGN_SEL ( my_slv_req_struct, my_mst_req_struct, my_psel_idx )
-// end
-`define APB_ASSIGN_SEL ( slv_req_struct, my_mst_req_struct, psel_idx ) \
-  `APB_SEL_IDX  ( assign, slv_req_struct, mst_req_struct, psel_idx )
+`define APB_ASSIGN_TO_REQ(req_struct, apb_if)   `APB_TO_REQ(assign, req_struct, apb_if)
+`define APB_ASSIGN_TO_RESP(resp_struct, apb_if) `APB_TO_RESP(assign, resp_struct, apb_if)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 `endif

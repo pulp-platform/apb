@@ -10,7 +10,7 @@
 // specific language governing permissions and limitations under the License.
 
 // An APB4 (v2.0) interface
-interface APB (
+interface APB #(
   parameter int unsigned ADDR_WIDTH = 32'd32,
   parameter int unsigned DATA_WIDTH = 32'd32
 );
@@ -54,15 +54,15 @@ interface APB_DV #(
   typedef logic [DATA_WIDTH-1:0] data_t;
   typedef logic [STRB_WIDTH-1:0] strb_t;
 
-  apb_pkg::addr_t paddr;
+  addr_t          paddr;
   apb_pkg::prot_t pprot;
   logic           psel;
   logic           penable;
   logic           pwrite;
-  apb_pkg::data_t pwdata;
-  apb_pkg::strb_t pstrb;
+  data_t          pwdata;
+  strb_t          pstrb;
   logic           pready;
-  apb_pkg::data_t prdata;
+  data_t          prdata;
   logic           pslverr;
 
   modport Master (

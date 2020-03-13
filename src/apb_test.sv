@@ -23,10 +23,13 @@ package apb_test;
     typedef logic [ADDR_WIDTH-1:0] addr_t;
     typedef logic [DATA_WIDTH-1:0] data_t;
     typedef logic [STRB_WIDTH-1:0] strb_t;
-    virtual APB_DV apb;
+    virtual APB_DV #(
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .DATA_WIDTH(DATA_WIDTH)
+    ) apb;
     semaphore lock;
 
-    function new(virtual APB_DV apb);
+    function new(virtual APB_DV #(.ADDR_WIDTH(ADDR_WIDTH), .DATA_WIDTH(DATA_WIDTH)) apb);
       this.apb = apb;
       this.lock = new(1);
     endfunction
@@ -93,13 +96,13 @@ package apb_test;
       while (!lock.try_get()) begin
         cycle_end();
       end
-      apb.paddr          <= #TA addr;
-      apb.pwdata         <= #TA data;
-      apb.pstrb          <= #TA strb;
-      apb.pwrite         <= #TA 1'b1;
-      apb.psel[psel_idx] <= #TA 1'b1;
+      apb.paddr   <= #TA addr;
+      apb.pwdata  <= #TA data;
+      apb.pstrb   <= #TA strb;
+      apb.pwrite  <= #TA 1'b1;
+      apb.psel    <= #TA 1'b1;
       cycle_end();
-      apb.penable        <= #TA 1'b1;
+      apb.penable <= #TA 1'b1;
       cycle_start();
       while (!apb.pready) begin
         cycle_end();
@@ -111,7 +114,7 @@ package apb_test;
       apb.pwdata  <= #TA '0;
       apb.pstrb   <= #TA '0;
       apb.pwrite  <= #TA 1'b0;
-      apb.psel    <= #TA '0;
+      apb.psel    <= #TA 1'b0;
       apb.penable <= #TA 1'b0;
       lock.put();
     endtask

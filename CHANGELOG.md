@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Rename `APB_BUS` interface to `APB`, change its parameters to constants, and remove `in` and `out`
   modports.
+- `apb_ro_regs`: Use of `addr_decode` module for indexing and change to structs.
 
 ## 0.1.0 - 2018-09-12
 ### Changed
