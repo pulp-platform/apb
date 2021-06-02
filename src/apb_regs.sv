@@ -86,6 +86,10 @@ module apb_regs #(
     apb_addr_t   end_addr;
   } rule_t;
 
+  logic has_reset_d, has_reset_q;
+  `FFARN(has_reset_q, has_reset_q, 1'b0, pclk_i, preset_ni)
+  assign has_reset_d = 1'b1;
+
   // signal declarations
   rule_t     [NoApbRegs-1:0] addr_map;
   idx_t                      reg_idx;
@@ -96,7 +100,7 @@ module apb_regs #(
 
   // generate address map for the registers
   for (genvar i = 0; i < NoApbRegs; i++) begin: gen_reg_addr_map
-    assign addr_map[i] = '{
+    assign addr_map[i] = rule_t'{
       idx:        unsigned'(i),
       start_addr: base_addr_i + apb_addr_t'( i        * AddrOffset),
       end_addr:   base_addr_i + apb_addr_t'((i+32'd1) * AddrOffset)
@@ -105,7 +109,7 @@ module apb_regs #(
 
   always_comb begin
     // default assignments
-    reg_d      = reg_q;
+    reg_d      = has_reset_q ? reg_q : reg_init_i;
     reg_update = '0;
     resp_o     = '{
       pready:  req_i.psel & req_i.penable,
@@ -144,7 +148,7 @@ module apb_regs #(
   // output assignment and registers
   for (genvar i = 0; i < NoApbRegs; i++) begin : gen_rw_regs
     assign reg_q_o[i] = ReadOnly[i] ? reg_init_i[i] : reg_q[i];
-    `FFLARN(reg_q[i], reg_d[i], reg_update[i], reg_init_i[i], pclk_i, preset_ni)
+    `FFLARN(reg_q[i], reg_d[i], reg_update[i], '0, pclk_i, preset_ni)
   end
 
   addr_decode #(
