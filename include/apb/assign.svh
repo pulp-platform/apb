@@ -84,7 +84,7 @@
     pstrb:   apb_if.pstrb                      \
   };
 `define APB_TO_RESP(opt_as, resp_struct, apb_if) \
-  opt_as req_struct = '{                         \
+  opt_as resp_struct = '{                        \
     pready:  apb_if.pready,                      \
     prdata:  apb_if.prdata,                      \
     pslverr: apb_if.pslverr                      \
