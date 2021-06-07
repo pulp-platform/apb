@@ -21,6 +21,7 @@ sources:
   - src/apb_intf.sv
   # Level 2
   - src/apb_regs.sv
+  - src/apb_cdc.sv
 
   - target: simulation
     files:
@@ -29,9 +30,9 @@ sources:
   - target: test
     files:
       - test/tb_apb_regs.sv
+      - test/tb_apb_cdc.sv
 
   - target: synth_test
     files:
       # Level 0
       - test/synth_bench.sv
-
