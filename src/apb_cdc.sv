@@ -10,9 +10,8 @@
 
 // APB Clock Domain Crossing
 // Author: Manuel Eggimann <meggimann@iis.ee.ethz.ch>
-// Description: This module exposes a number of registers on an APB interface.
-//              It responds to not mapped accesses with a slave error.
-//              Some of the registers can be configured to be read only.
+// Description: A clock domain crossing module on an APB interface. The module uses gray-counting
+// CDC FIFOS in both directions to synchronize source side with destination side.
 // Parameters:
 // - `LogDepth`:     Depth of the FIFO crossing the clock domain
 // - `req_t`:        APB4 request struct. See macro definition in `include/typedef.svh`
