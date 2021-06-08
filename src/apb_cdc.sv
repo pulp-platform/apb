@@ -13,7 +13,7 @@
 // Description: A clock domain crossing module on an APB interface. The module uses gray-counting
 // CDC FIFOS in both directions to synchronize source side with destination side.
 // Parameters:
-// - `LogDepth`:     Depth of the FIFO crossing the clock domain
+// - `LogDepth`:     The FIFO crossing the clock domain has `2^LogDepth` entries
 // - `req_t`:        APB4 request struct. See macro definition in `include/typedef.svh`
 // - `resp_t`:       APB4 response struct. See macro definition in `include/typedef.svh`
 //
@@ -29,8 +29,8 @@
 // - `dst_resp_i:    Destination side APB4 response struct, bundles all APB4 signals from the slave (resp_t).
 //
 // This file also features the module `apb_cdc_intf`. The difference is that instead of the
-// request and response structs it uses an `APB.Slave` interface. The parameters have the same
-// Function, however are defined in `ALL_CAPS`.
+// request and response structs it uses a `APB` interfaces. The parameters have the same
+// function, however are defined in `ALL_CAPS`.
 
 (* no_ungroup *)
 (* no_boundary_optimization *)
@@ -63,7 +63,7 @@ module apb_cdc #(
   } apb_async_req_data_t;
 
   typedef struct packed {
-    data_t  	 prdata;
+    data_t        prdata;
     logic        pslverr;
   } apb_async_resp_data_t;
 
@@ -99,13 +99,13 @@ module apb_cdc #(
 
   // In the source domain we translate simultaneous assertion of psel and penable into a transaction
   // on the CDC. The FSM then transitions into a busy state where it waits for a response comming
-  // back on the other CDC FIFO. Once this response appears the pready signal is asserted to finishe
+  // back on the other CDC FIFO. Once this response appears the pready signal is asserted to finish
   // the APB transaction.
 
   always_comb begin
     src_state_d       = src_state_q;
     src_req_valid     = 1'b0;
-    src_resp_ready     = 1'b0;
+    src_resp_ready    = 1'b0;
     src_resp_o.pready = 1'b0;
     case (src_state_q)
       Src_Idle: begin

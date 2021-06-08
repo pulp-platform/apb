@@ -114,7 +114,7 @@ module tb_apb_cdc #(
   ) apb_master = new(upstream_dv);
 
 
-  logic                            mst_done = 1'b0;
+  logic mst_done = 1'b0;
   initial begin
     wait(upstream_rst_n);
     apb_master.run(N_TXNS);
