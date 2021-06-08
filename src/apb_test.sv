@@ -145,7 +145,8 @@ package apb_test;
       output apb_request_t request
     );
       cycle_start();
-      while (apb.psel != 1 && apb.penable != 1) begin cycle_end(); cycle_start(); end
+      while (!apb.psel) begin cycle_end(); cycle_start(); end
+      while (!apb.penable) begin cycle_end(); cycle_start(); end
       request        = new;
       request.paddr  = apb.paddr;
       request.pwdata = apb.pwdata;
@@ -180,7 +181,6 @@ package apb_test;
     // APB interface parmeters
     parameter int unsigned ADDR_WIDTH = 32'd32,
     parameter int unsigned DATA_WIDTH = 32'd32,
-    // Stimuli application and test time
     // Stimuli application and test time
     parameter time  TA = 0ps,
     parameter time  TT = 0ps,
@@ -239,7 +239,7 @@ package apb_test;
         automatic logic rand_success;
         drv.recv_request(request);
         request_queue.put(request);
-        if (request.pwrite == 1) begin
+        if (request.pwrite) begin
           rand_wait(RESP_MIN_WAIT_CYCLES, RESP_MAX_WAIT_CYCLES);
           drv.send_write_ack();
         end else begin
@@ -253,7 +253,7 @@ package apb_test;
 
     task run();
       handle_requests();
-    endtask : run // run
+    endtask
 
   endclass // apb_rand_slave
 
@@ -261,7 +261,6 @@ package apb_test;
     // APB interface parmeters
     parameter int unsigned ADDR_WIDTH = 32'd32,
     parameter int unsigned DATA_WIDTH = 32'd32,
-    // Stimuli application and test time
     // Stimuli application and test time
     parameter time         TA = 0ps,
     parameter time         TT = 0ps,
@@ -312,7 +311,7 @@ package apb_test;
       };
       assert (rand_success) else $error("Failed to randomize wait cycles!");
       repeat (cycles) @(posedge this.drv.apb.clk_i);
-    endtask : rand_wait // rand_wait
+    endtask
 
     task automatic send_requests(input int unsigned n_requests);
       automatic apb_request_t request = new;
@@ -323,8 +322,8 @@ package apb_test;
         rand_wait(REQ_MIN_WAIT_CYCLES, REQ_MAX_WAIT_CYCLES);
         rand_success       = request.randomize(); assert(rand_success);
         request_queue.put(request);
-        if (request.pwrite == 1'b1) begin
-          $info("Sending write reqeust with addr: %h, pstrb: %b and pwdata: %h", request.paddr, request.pstrb, request.pwdata);
+        if (request.pwrite) begin
+          $info("Sending write request with addr: %h, pstrb: %b and pwdata: %h", request.paddr, request.pstrb, request.pwdata);
           drv.write(request.paddr, request.pwdata, request.pstrb, write_err);
         end else begin
           $info("Sending read request with addr: %h...", request.paddr);
