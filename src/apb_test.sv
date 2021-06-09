@@ -22,14 +22,14 @@ package apb_test;
     rand logic [DATA_WIDTH-1:0]   pwdata = '0;
     rand logic [STRB_WIDTH-1:0]   pstrb  = '0;
     rand logic                    pwrite = 1'b1;
-  endclass; // apb_request
+  endclass;
 
   class apb_response #(
     parameter DATA_WIDTH = 32'd32
   );
     rand logic [DATA_WIDTH-1:0] prdata  = '0;
     rand logic                  pslverr = 1'b0;
-  endclass; // apb_read_request
+  endclass;
 
   // Simple APB driver with thread-safe read and write functions
   class apb_driver #(
@@ -138,7 +138,7 @@ package apb_test;
       apb.psel    <= #TA 1'b0;
       apb.penable <= #TA 1'b0;
       lock.put();
-    endtask // write
+    endtask
 
     // Wait for incoming apb request
     task recv_request (
@@ -153,7 +153,7 @@ package apb_test;
       request.pwrite = apb.pwrite;
       request.pstrb  = apb.pstrb;
       cycle_end();
-    endtask // recv_requests
+    endtask
 
     // Acknowledge incoming APB write request (assert pready).
     task send_write_ack();
@@ -175,7 +175,7 @@ package apb_test;
       apb.pslverr   <= #TA 0;
     endtask
 
-  endclass // apb_driver
+  endclass
 
   class apb_rand_slave #(
     // APB interface parmeters
@@ -214,7 +214,7 @@ package apb_test;
       this.request_queue  = new;
       this.response_queue = new;
       this.reset();
-    endfunction // new
+    endfunction
 
     function reset();
       drv.reset_slave();
@@ -255,7 +255,7 @@ package apb_test;
       handle_requests();
     endtask
 
-  endclass // apb_rand_slave
+  endclass
 
   class apb_rand_master #(
     // APB interface parmeters
@@ -295,11 +295,11 @@ package apb_test;
       this.request_queue  = new;
       this.response_queue = new;
       this.reset();
-    endfunction // new
+    endfunction
 
     function reset();
       drv.reset_master();
-    endfunction // reset
+    endfunction
 
     // TODO: The `rand_wait` task exists in `rand_verif_pkg`, but that task cannot be called with
     // `this.drv.apb.clk_i` as `clk` argument.  What is the syntax getting an assignable reference?
@@ -336,7 +336,7 @@ package apb_test;
     task automatic run(input int unsigned n_request);
       $info("Run apb_rand_master for %0d transactions", n_request);
       send_requests(n_request);
-    endtask // run
+    endtask
 
   endclass
 endpackage
