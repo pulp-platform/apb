@@ -22,6 +22,7 @@ sources:
   # Level 2
   - src/apb_regs.sv
   - src/apb_cdc.sv
+  - src/apb_demux.sv
 
   - target: simulation
     files:
@@ -31,6 +32,7 @@ sources:
     files:
       - test/tb_apb_regs.sv
       - test/tb_apb_cdc.sv
+      - test/tb_apb_demux.sv
 
   - target: synth_test
     files:
