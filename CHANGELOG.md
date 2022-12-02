@@ -12,6 +12,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 ### Fixed
+
+## 0.2.2 - 2022-12-02
+
+### Added
+- Add APB clock domain crossing (`apb_cdc`).
+- Add additional VIP classes `apb_rand_slave` and `apb_rand_master`.
+
+### Fixed
 - Improve tool compatibility by explicitly annotating the type of a `struct` assignment.
 - Set the initial value of the registers as soon as the reset is released, rather than as reset
   value, because driving the reset value from an input signal is potentially unsafe.
