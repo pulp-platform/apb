@@ -8,14 +8,16 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-// APB Demultiplexer
-// Description: This module demultiplexes one APB slave port to several master ports using the
-// select_i signal.
+// APB Demultiplexer Description:
+// This module demultiplexes one APB slave portto several master ports using
+// the select_i signal.
 
 module apb_demux #(
-  parameter int unsigned NoMstPorts  = 32'd2,
-  parameter type req_t               = logic,
-  parameter type resp_t              = logic,
+  parameter int unsigned NoMstPorts  = 32'd2, // The number of demux ports. If
+                                              // 1, degenerates gracefully to a
+                                              // feedthrough.
+  parameter type req_t               = logic, // APB request strcut
+  parameter type resp_t              = logic, // APB response struct
   // DEPENDENT PARAMETERS DO NOT OVERWRITE!
   parameter int unsigned SelectWidth = (NoMstPorts > 32'd1)? $clog2(NoMstPorts) : 32'd1,
   parameter type select_t            = logic [SelectWidth-1:0]
