@@ -144,7 +144,9 @@ module tb_apb_demux #(
       @(posedge source_bus_dv.penable);
       $info("Checking new transaction...");
       expected_select = expected_request.paddr<NoMstPorts*ADDR_REGION_SIZE? expected_request.paddr / ADDR_REGION_SIZE: '0;
-      // Compare with request received at slaves
+      // Wait for  1 cycle for the request to arrive
+      #TCLK;
+      // Comsourpare with request received at slaves
       pop_success     = apb_slave[expected_select].request_queue.try_get(received_request);
       assert (pop_success) else begin
         $error("Slave %0d did not receive the request.", expected_select);
