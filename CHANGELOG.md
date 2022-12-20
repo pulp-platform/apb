@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+## 0.2.3 - 2022-12-20
+
+### Added
+- Add APB error slave (`apb_err_slv`).
+- Add APB demux (`apb_demux`) and testbench.
+
+
 ## 0.2.2 - 2022-12-02
 
 ### Added
