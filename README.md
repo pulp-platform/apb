@@ -24,9 +24,10 @@ Maintainer: Andreas Kurth <akurth@iis.ee.ethz.ch>
 
 ### Leaf Modules
 
-|           Name                           |                     Description                                   |
-|------------------------------------------|-------------------------------------------------------------------|
-| [`apb_regs`](src/apb_regs.sv)            | Read and write registers, with optional read only mapping         |
+| Name                             | Description                                               |
+|----------------------------------+-----------------------------------------------------------|
+| [`apb_regs`](src/apb_regs.sv)    | Read and write registers, with optional read only mapping |
+| [`apb_demux`](src/apb_demux.sv)  | APB4 demultiplexer with using select signal               |
 
 ### Verification and Simulation
 
