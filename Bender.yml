@@ -20,6 +20,7 @@ sources:
   # Level 1
   - src/apb_intf.sv
   # Level 2
+  - src/apb_err_slv.sv
   - src/apb_regs.sv
   - src/apb_cdc.sv
   - src/apb_demux.sv
