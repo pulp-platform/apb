@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+## 0.2.4 - 2023-05-17
+
+### Added
+- Add `APB_TYPEDEF_ALL` macro.
+
 ## 0.2.3 - 2022-12-20
 
 ### Added
