@@ -48,7 +48,7 @@ package apb_test;
       .ADDR_WIDTH(ADDR_WIDTH),
       .DATA_WIDTH(DATA_WIDTH)
     ) apb;
-    semaphore lock;
+    std::semaphore lock;
 
     function new(virtual APB_DV #(.ADDR_WIDTH(ADDR_WIDTH), .DATA_WIDTH(DATA_WIDTH)) apb);
       this.apb = apb;
@@ -201,8 +201,8 @@ package apb_test;
     typedef apb_driver_t::apb_response_t apb_response_t;
 
     apb_driver_t 	    drv;
-    mailbox #(apb_request_t) request_queue;
-    mailbox #(apb_response_t) response_queue;
+    std::mailbox #(apb_request_t) request_queue;
+    std::mailbox #(apb_response_t) response_queue;
 
     function new(
       virtual APB_DV #(
@@ -281,8 +281,8 @@ package apb_test;
     typedef apb_driver_t::apb_response_t apb_response_t;
 
     apb_driver_t 	    drv;
-    mailbox #(apb_request_t) request_queue;
-    mailbox #(apb_response_t) response_queue;
+    std::mailbox #(apb_request_t) request_queue;
+    std::mailbox #(apb_response_t) response_queue;
 
 
     function new(
