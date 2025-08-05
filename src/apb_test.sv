@@ -216,7 +216,7 @@ package apb_test;
       this.reset();
     endfunction
 
-    function reset();
+    function void reset();
       drv.reset_slave();
     endfunction
 
