@@ -182,11 +182,13 @@ module tb_apb_cdc #(
       end
       //Compare downstream received request with upstream sent request
       assert(received_request.paddr == expected_request.paddr) else begin
-        $error("Downstream: Received request's paddr: %h does not match the paddr: %h", received_request.paddr, expected_request.paddr);
+        $error("Downstream: Received request's paddr: %h does not match the paddr: %h",
+          received_request.paddr, expected_request.paddr);
         downstream_errors++;
       end
-      assert(received_request.pdata == expected_request.pdata) else begin
-        $error("Downstream: Received request's pdata: %h does not match the expected pdata: %h", received_request.pdata, expected_request.pdata);
+      assert(received_request.pwdata == expected_request.pwdata) else begin
+        $error("Downstream: Received request's pwdata: %h does not match the expected pwdata: %h",
+          received_request.pwdata, expected_request.pwdata);
         downstream_errors++;
       end
       assert(received_request.pwrite == expected_request.pwrite) else begin
