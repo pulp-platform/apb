@@ -176,7 +176,7 @@ module tb_apb_cdc #(
                                 // empy request_queue in the master means, that we received an
                                 // spurious request.
       assert(pop_success) else begin
-        $error("Downstream: Received spurious request. Addr: %h, Data: %h, write_en: %b", received_request.paddr, received_request.pdata, received_request.pwrite);
+        $error("Downstream: Received spurious request. Addr: %h, Data: %h, write_en: %b", received_request.paddr, received_request.pwdata, received_request.pwrite);
         downstream_errors++;
         continue;
       end
@@ -185,8 +185,8 @@ module tb_apb_cdc #(
         $error("Downstream: Received request's paddr: %h does not match the paddr: %h", received_request.paddr, expected_request.paddr);
         downstream_errors++;
       end
-      assert(received_request.pdata == expected_request.pdata) else begin
-        $error("Downstream: Received request's pdata: %h does not match the expected pdata: %h", received_request.pdata, expected_request.pdata);
+      assert(received_request.pwdata == expected_request.pwdata) else begin
+        $error("Downstream: Received request's pwdata: %h does not match the expected pwdata: %h", received_request.pwdata, expected_request.pwdata);
         downstream_errors++;
       end
       assert(received_request.pwrite == expected_request.pwrite) else begin
