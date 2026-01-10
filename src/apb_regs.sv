@@ -86,10 +86,6 @@ module apb_regs #(
     apb_addr_t   end_addr;
   } rule_t;
 
-  logic has_reset_d, has_reset_q;
-  `FFARN(has_reset_q, has_reset_q, 1'b0, pclk_i, preset_ni)
-  assign has_reset_d = 1'b1;
-
   // signal declarations
   rule_t     [NoApbRegs-1:0] addr_map;
   idx_t                      reg_idx;
@@ -109,7 +105,7 @@ module apb_regs #(
 
   always_comb begin
     // default assignments
-    reg_d      = has_reset_q ? reg_q : reg_init_i;
+    reg_d      = reg_q;
     reg_update = '0;
     resp_o     = '{
       pready:  req_i.psel & req_i.penable,
