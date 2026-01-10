@@ -12,6 +12,8 @@
 // Test infrastructure for APB interfaces
 package apb_test;
 
+  import cf_math_pkg::*;
+
   class apb_request #(
     parameter ADDR_WIDTH = 32'd32,
     parameter DATA_WIDTH = 32'd32

@@ -1,0 +1,59 @@
+CAPI=2:
+
+name: pulp-platform.org::apb:0.2.4
+description: Implementation of the AMBA APB4 protocol, version 2.0, developed as part of the PULP platform at ETH Zurich
+
+filesets:
+  rtl:
+    files:
+      - include/apb/assign.svh : {is_include_file: true, include_path: include}
+      - include/apb/typedef.svh: {is_include_file: true, include_path: include}
+      - src/apb_pkg.sv
+      - src/apb_intf.sv
+      - src/apb_err_slv.sv
+      - src/apb_regs.sv
+      - src/apb_cdc.sv
+      - src/apb_demux.sv
+    file_type: systemVerilogSource
+    depend:
+      - ">=pulp-platform.org::common_cells:1.16.2"
+
+  sim:
+    files:
+      - src/apb_test.sv
+      - test/tb_apb_regs.sv
+      - test/tb_apb_cdc.sv
+      - test/tb_apb_demux.sv
+    file_type: systemVerilogSource
+    depend: [pulp-platform.org::common_verification]
+
+  synth:
+    files:
+      - test/synth_bench.sv : {file_type: systemVerilogSource}
+
+targets:
+  default:
+    filesets: [rtl]
+
+  synth:
+    filesets: [rtl, synth]
+    toplevel: synth_bench
+
+  tb_apb_regs: &tb
+    description: Testbench for apb_regs
+    filesets: [rtl, sim]
+    flow: sim
+    flow_options:
+      tool: verilator
+      vlogan_options: [-timescale=1ns/1ps]
+    toplevel: tb_apb_regs
+
+  tb_apb_demux:
+    description: Testbench for apb_demux
+    <<: *tb
+    toplevel: tb_apb_demux
+
+  tb_apb_cdc:
+    description: Testbench for apb_cdc
+    <<: *tb
+    toplevel: tb_apb_demux

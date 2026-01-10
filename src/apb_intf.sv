@@ -10,7 +10,9 @@
 // specific language governing permissions and limitations under the License.
 
 // An APB4 (v2.0) interface
-interface APB #(
+interface APB
+  import cf_math_pkg::*;
+#(
   parameter int unsigned ADDR_WIDTH = 32'd32,
   parameter int unsigned DATA_WIDTH = 32'd32
 );
@@ -43,7 +45,9 @@ interface APB #(
 endinterface
 
 // A clocked APB4 (v2.0) interface for use in design verification
-interface APB_DV #(
+interface APB_DV
+  import cf_math_pkg::*;
+#(
   parameter int unsigned ADDR_WIDTH = 32'd32,
   parameter int unsigned DATA_WIDTH = 32'd32
 ) (

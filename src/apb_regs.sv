@@ -218,6 +218,9 @@ module apb_regs_intf #(
   input  reg_data_t [NO_APB_REGS-1:0] reg_init_i,  // initalisation value for the registers
   output reg_data_t [NO_APB_REGS-1:0] reg_q_o
 );
+
+  import cf_math_pkg::*;
+
   localparam int unsigned APB_STRB_WIDTH = cf_math_pkg::ceil_div(APB_DATA_WIDTH, 8);
   typedef logic [APB_DATA_WIDTH-1:0] apb_data_t;
   typedef logic [APB_STRB_WIDTH-1:0] apb_strb_t;
