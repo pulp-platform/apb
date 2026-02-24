@@ -11,6 +11,7 @@
 
 // Author:
 // Wolfgang Roenninger  <wroennin@student.ethz.ch>
+// Riccardo Tedeschi    <riccardo.tedeschi6@unibo.it>
 
 // Macros to define APB4 Request/Response Structs
 
@@ -23,22 +24,26 @@
 // Usage Example:
 // `APB_TYPEDEF_REQ_T  ( apb_req_t,  addr_t, data_t, strb_t )
 // `APB_TYPEDEF_RESP_T ( apb_resp_t, data_t )
+`define APB_DECL_REQ_T(addr_t, data_t, strb_t)  \
+  struct packed {                               \
+    addr_t          paddr;                      \
+    apb_pkg::prot_t pprot;                      \
+    logic           psel;                       \
+    logic           penable;                    \
+    logic           pwrite;                     \
+    data_t          pwdata;                     \
+    strb_t          pstrb;                      \
+  }
 `define APB_TYPEDEF_REQ_T(apb_req_t, addr_t, data_t, strb_t)  \
-  typedef struct packed {                                     \
-    addr_t          paddr;                                    \
-    apb_pkg::prot_t pprot;                                    \
-    logic           psel;                                     \
-    logic           penable;                                  \
-    logic           pwrite;                                   \
-    data_t          pwdata;                                   \
-    strb_t          pstrb;                                    \
-  } apb_req_t;
+  typedef `APB_DECL_REQ_T(addr_t, data_t, strb_t) apb_req_t;
+`define APB_DECL_RESP_T(data_t) \
+  struct packed {               \
+    logic  pready;              \
+    data_t prdata;              \
+    logic  pslverr;             \
+  }
 `define APB_TYPEDEF_RESP_T(apb_resp_t, data_t) \
-  typedef struct packed {                      \
-    logic  pready;                             \
-    data_t prdata;                             \
-    logic  pslverr;                            \
-    } apb_resp_t;
+  typedef `APB_DECL_RESP_T(data_t) apb_resp_t;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
