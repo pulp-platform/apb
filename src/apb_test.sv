@@ -16,7 +16,7 @@ package apb_test;
     parameter ADDR_WIDTH = 32'd32,
     parameter DATA_WIDTH = 32'd32
   );
-    localparam STRB_WIDTH = cf_math_pkg::ceil_div(DATA_WIDTH, 8);
+    localparam STRB_WIDTH = cc_pkg::ceil_div(DATA_WIDTH, 8);
 
     rand logic [ADDR_WIDTH-1:0]   paddr  = '0;
     rand logic [DATA_WIDTH-1:0]   pwdata = '0;
@@ -38,7 +38,7 @@ package apb_test;
     parameter time         TA         = 0ns,    // application time
     parameter time         TT         = 0ns     // test time
   );
-    localparam int unsigned STRB_WIDTH = cf_math_pkg::ceil_div(DATA_WIDTH, 8);
+    localparam int unsigned STRB_WIDTH = cc_pkg::ceil_div(DATA_WIDTH, 8);
     typedef logic [ADDR_WIDTH-1:0] addr_t;
     typedef logic [DATA_WIDTH-1:0] data_t;
     typedef logic [STRB_WIDTH-1:0] strb_t;

@@ -87,7 +87,7 @@ module apb_regs #(
   } rule_t;
 
   logic has_reset_d, has_reset_q;
-  `FFARN(has_reset_q, has_reset_q, 1'b0, pclk_i, preset_ni)
+  `FF(has_reset_q, has_reset_q, 1'b0, pclk_i, preset_ni)
   assign has_reset_d = 1'b1;
 
   // signal declarations
@@ -148,10 +148,10 @@ module apb_regs #(
   // output assignment and registers
   for (genvar i = 0; i < NoApbRegs; i++) begin : gen_rw_regs
     assign reg_q_o[i] = ReadOnly[i] ? reg_init_i[i] : reg_q[i];
-    `FFLARN(reg_q[i], reg_d[i], reg_update[i], '0, pclk_i, preset_ni)
+    `FFL(reg_q[i], reg_d[i], reg_update[i], '0, pclk_i, preset_ni)
   end
 
-  addr_decode #(
+  cc_addr_decode #(
     .NoIndices ( NoApbRegs  ),
     .NoRules   ( NoApbRegs  ),
     .addr_t    ( apb_addr_t ),
@@ -218,7 +218,7 @@ module apb_regs_intf #(
   input  reg_data_t [NO_APB_REGS-1:0] reg_init_i,  // initalisation value for the registers
   output reg_data_t [NO_APB_REGS-1:0] reg_q_o
 );
-  localparam int unsigned APB_STRB_WIDTH = cf_math_pkg::ceil_div(APB_DATA_WIDTH, 8);
+  localparam int unsigned APB_STRB_WIDTH = cc_pkg::ceil_div(APB_DATA_WIDTH, 8);
   typedef logic [APB_DATA_WIDTH-1:0] apb_data_t;
   typedef logic [APB_STRB_WIDTH-1:0] apb_strb_t;
 

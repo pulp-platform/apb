@@ -20,7 +20,7 @@
 module tb_apb_cdc #(
   parameter int unsigned ApbAddrWidth = 32'd32,
   parameter int unsigned ApbDataWidth = 32'd27,
-  localparam int unsigned ApbStrbWidth = cf_math_pkg::ceil_div(ApbDataWidth, 8),
+  localparam int unsigned ApbStrbWidth = cc_pkg::ceil_div(ApbDataWidth, 8),
   parameter int unsigned CDCLogDepth  = 3,
 
   // TB Parameters

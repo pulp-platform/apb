@@ -21,7 +21,7 @@ module tb_apb_regs;
 
   localparam int unsigned ApbAddrWidth   = 32'd32;
   localparam int unsigned ApbDataWidth   = 32'd27;
-  localparam int unsigned ApbStrbWidth   = cf_math_pkg::ceil_div(ApbDataWidth, 8);
+  localparam int unsigned ApbStrbWidth   = cc_pkg::ceil_div(ApbDataWidth, 8);
   localparam int unsigned RegDataWidth   = 32'd16;
 
   localparam int unsigned NoApbRegs      = 32'd342;
