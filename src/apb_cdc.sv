@@ -196,7 +196,7 @@ module apb_cdc #(
   // CDC FIFOS //
   ///////////////
 
-  cdc_fifo_gray #(
+  cc_cdc_fifo_gray #(
     .T         ( apb_async_req_data_t ),
     .LOG_DEPTH (  LogDepth            )
   ) i_cdc_fifo_gray_req (
@@ -213,7 +213,7 @@ module apb_cdc #(
    .dst_ready_i ( dst_req_ready )
   );
 
-  cdc_fifo_gray #(
+  cc_cdc_fifo_gray #(
     .T         ( apb_async_resp_data_t ),
     .LOG_DEPTH (  LogDepth             )
   ) i_cdc_fifo_gray_resp (
