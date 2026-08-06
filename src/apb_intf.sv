@@ -14,7 +14,7 @@ interface APB #(
   parameter int unsigned ADDR_WIDTH = 32'd32,
   parameter int unsigned DATA_WIDTH = 32'd32
 );
-  localparam int unsigned STRB_WIDTH = cf_math_pkg::ceil_div(DATA_WIDTH, 8);
+  localparam int unsigned STRB_WIDTH = cc_pkg::ceil_div(DATA_WIDTH, 8);
   typedef logic [ADDR_WIDTH-1:0] addr_t;
   typedef logic [DATA_WIDTH-1:0] data_t;
   typedef logic [STRB_WIDTH-1:0] strb_t;
@@ -49,7 +49,7 @@ interface APB_DV #(
 ) (
   input logic clk_i
 );
-  localparam int unsigned STRB_WIDTH = cf_math_pkg::ceil_div(DATA_WIDTH, 8);
+  localparam int unsigned STRB_WIDTH = cc_pkg::ceil_div(DATA_WIDTH, 8);
   typedef logic [ADDR_WIDTH-1:0] addr_t;
   typedef logic [DATA_WIDTH-1:0] data_t;
   typedef logic [STRB_WIDTH-1:0] strb_t;

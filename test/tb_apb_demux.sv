@@ -19,7 +19,7 @@ module tb_apb_demux #(
   parameter int unsigned  ApbAddrWidth = 32'd15,
   parameter int unsigned  ApbDataWidth = 32'd32,
   parameter int unsigned NoMstPorts    = 5,
-  localparam int unsigned ApbStrbWidth = cf_math_pkg::ceil_div(ApbDataWidth, 8),
+  localparam int unsigned ApbStrbWidth = cc_pkg::ceil_div(ApbDataWidth, 8),
 
   // TB Parameters
   parameter time          TCLK = 10ns,
@@ -80,7 +80,7 @@ module tb_apb_demux #(
   localparam int unsigned ADDR_REGION_SIZE = (2**ApbAddrWidth)/NoMstPorts;
   rule_t[NoMstPorts-1:0] addr_map;
 
-  addr_decode #(
+  cc_addr_decode #(
     .NoIndices ( NoMstPorts ),
     .NoRules   ( NoMstPorts ),
     .addr_t    ( apb_addr_t ),
