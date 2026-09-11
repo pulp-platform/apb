@@ -20,6 +20,7 @@ sources:
   # Level 1
   - src/apb_intf.sv
   # Level 2
+  - src/apb_cut.sv
   - src/apb_err_slv.sv
   - src/apb_regs.sv
   - src/apb_cdc.sv
@@ -34,6 +35,7 @@ sources:
       - test/tb_apb_regs.sv
       - test/tb_apb_cdc.sv
       - test/tb_apb_demux.sv
+      - test/tb_apb_cut.sv
 
   - target: synth_test
     files:
