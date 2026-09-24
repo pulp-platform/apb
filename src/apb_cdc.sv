@@ -214,7 +214,7 @@ module apb_cdc #(
   );
 
   cc_cdc_fifo_gray #(
-    .data_t    ( apb_async_req_data_t ),
+    .data_t    ( apb_async_resp_data_t ),
     .LogDepth  (  LogDepth            )
   ) i_cdc_fifo_gray_resp (
    .src_clk_i   ( dst_pclk_i      ),
