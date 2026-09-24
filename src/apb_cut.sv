@@ -13,7 +13,7 @@
 
 module apb_cut #(
   parameter bit  Bypass = 1'b0, // Bypass the cut or not
-  parameter type apb_req_t  = logic, // APB request strcut
+  parameter type apb_req_t  = logic, // APB request struct
   parameter type apb_resp_t = logic  // APB response struct
 )(
   input  logic clk_i,
@@ -54,8 +54,12 @@ module apb_cut #(
       pready = 1'b0;
       case (state_q)
         Idle: begin
-          if (apb_req_i.psel && !apb_req_i.penable)
+          // Also accept a request already in access, e.g. when the upstream
+          // setup phase occurred while this cut was held in reset. Generate
+          // a fresh setup phase downstream in either case.
+          if (apb_req_i.psel) begin
             state_d = Setup;
+          end
         end
         Setup: begin
           state_d = Access;
@@ -65,11 +69,12 @@ module apb_cut #(
           psel = 1'b1;
           penable = 1'b1;
           if (apb_rsp_i.pready) state_d = Response;
-         end
+        end
         Response: begin
           pready = 1'b1;
           state_d = Idle;
         end
+        default: state_d = Idle;
       endcase
     end
 
@@ -91,8 +96,15 @@ module apb_cut #(
         apb_rsp_q <= '0;
       end else begin
         state_q <= state_d;
-        apb_req_q <= apb_req_i;
-        apb_rsp_q <= apb_rsp_i;
+        // Hold the accepted request throughout the downstream transaction.
+        if (state_q == Idle && apb_req_i.psel) begin
+          apb_req_q <= apb_req_i;
+        end
+        // Sample the response only on a completed downstream access and keep
+        // it until the next response, even if the slave changes its idle data.
+        if (state_q == Access && apb_rsp_i.pready) begin
+          apb_rsp_q <= apb_rsp_i;
+        end
       end
     end
   end
@@ -131,7 +143,7 @@ module apb_cut_intf #(
 
   apb_cut #(
     .Bypass (BYPASS), // Bypass the cut or not
-    .apb_req_t (apb_req_t), // APB request strcut
+    .apb_req_t (apb_req_t), // APB request struct
     .apb_resp_t (apb_resp_t) // APB response struct
   ) i_apb_cut (
     .clk_i,
