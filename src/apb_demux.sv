@@ -9,7 +9,7 @@
 // specific language governing permissions and limitations under the License.
 
 // APB Demultiplexer Description:
-// This module demultiplexes one APB slave portto several master ports using
+// This module demultiplexes one APB slave port to several master ports using
 // the select_i signal.
 
 module apb_demux #(
